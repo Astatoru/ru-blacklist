@@ -6,5 +6,5 @@ The easy way to block active probing of your server by russian glowies
 # USE AT YOUR OWN RISK!
 
 ### To-do
-- Retest all scripts (to make sure all of them working properly)
+- Retest all scripts (to make sure all of them are working properly)
 - Make the how to use guide
