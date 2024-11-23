@@ -34,7 +34,6 @@ if ipset list -n | grep -q "ru-blacklist"; then
 fi
 
 ipset create ru-blacklist hash:net &>/dev/null
-
 while read -r ip; do
     if ! ipset test ru-blacklist "$ip" 2>/dev/null; then
         ipset add ru-blacklist "$ip"
