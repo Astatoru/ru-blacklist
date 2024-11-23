@@ -46,7 +46,6 @@ if ! iptables -n -t raw -C PREROUTING -m set --match-set ru-blacklist src -j DRO
 	iptables -n -t raw -I PREROUTING -m set --match-set ru-blacklist src -j DROP
 	echo "The rule for PREROUTING chain was successfully created"
 fi
-
 iptables-save > /etc/iptables/iptables.rules
 
 echo "The blacklist was successfully enabled"
