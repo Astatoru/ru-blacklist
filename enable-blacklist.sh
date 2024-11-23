@@ -6,7 +6,7 @@ if [ $(id -u) -ne 0 ]
   exit 1
 fi
 
-if [[ ! -d "/etc/iptables/" ]]; then
+if [[ ! -d "/etc/iptables" ]]; then
 	echo "The script is intended to be used with iptables. Are you sure all the necessary packages are installed?"
 	exit 2
 fi
@@ -47,9 +47,6 @@ if ! iptables -n -t raw -C PREROUTING -m set --match-set ru-blacklist src -j DRO
 	echo "The rule for PREROUTING chain was successfully created"
 fi
 
-if [ ! -d "/etc/iptables" ]; then
-  mkdir "/etc/iptables"
-fi
 iptables-save > /etc/iptables/iptables.rules
 
 echo "The blacklist was successfully enabled"
