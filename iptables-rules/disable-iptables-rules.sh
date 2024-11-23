@@ -50,7 +50,7 @@ if [ -n "$XUI_PORT" ]; then
         iptables -D INPUT -p tcp --dport "$XUI_PORT" -j ACCEPT
     fi
 else
-    echo "No port entered, skipping rule deletion."
+    echo "No port entered, skipping rule deletion"
 fi
 
 # Save rules
