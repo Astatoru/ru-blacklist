@@ -14,12 +14,8 @@ if [ -f "iptables-backup/iptables.rules" ]; then
 fi
 iptables-save > "iptables-backup/iptables.rules"
 
-if iptables -C INPUT -m set --match-set ru-blacklist src -j DROP 2>/dev/null; then
-	iptables -D INPUT -m set --match-set ru-blacklist src -j DROP
-fi
-
-if iptables -C FORWARD -m set --match-set ru-blacklist src -j DROP 2>/dev/null; then
-	iptables -D FORWARD -m set --match-set ru-blacklist src -j DROP
+if iptables -n -t raw -C PREROUTING -m set --match-set ru-blacklist src -j DROP 2>/dev/null; then
+	iptables -n -t raw -D PREROUTING -m set --match-set ru-blacklist src -j DROP
 fi
 
 if ipset list -n | grep -q "ru-blacklist"; then
@@ -37,14 +33,9 @@ done < ru-blacklist.txt
 
 ipset save > /etc/ipset.conf
 
-if ! iptables -C INPUT -m set --match-set ru-blacklist src -j DROP 2>/dev/null; then
-	iptables -I INPUT -m set --match-set ru-blacklist src -j DROP
+if ! iptables -n -t raw -C PREROUTING -m set --match-set ru-blacklist src -j DROP 2>/dev/null; then
+	iptables -n -t raw -I PREROUTING -m set --match-set ru-blacklist src -j DROP
 	echo "The rule for INPUT chain was successfully created"
-fi
-
-if ! iptables -C FORWARD -m set --match-set ru-blacklist src -j DROP 2>/dev/null; then
-	iptables -I FORWARD -m set --match-set ru-blacklist src -j DROP
-	echo "The rule for FORWARD chain was successfully created"
 fi
 
 if [ ! -d "/etc/iptables" ]; then
