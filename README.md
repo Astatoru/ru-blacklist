@@ -5,3 +5,4 @@ The easy way to block active probing of your server by Russian glowies
 
 ### To-do
 - Make a guide on how to use it
+- Make a script that'll create a services for restoring iptables and ipset configurations after reboot
