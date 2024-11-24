@@ -86,7 +86,7 @@ while read -r ip; do
     fi
 done < ru-blacklist-old.txt
 
-# Removing cidrs that was removed with a new blacklist update
+# Remove cidrs that was removed with a new blacklist update
 for ip in "${!old_ips[@]}"; do
     if [[ -z "${new_ips[$ip]}" ]]; then
         if ipset test ru-blacklist-v4 "$ip" &>/dev/null; then
