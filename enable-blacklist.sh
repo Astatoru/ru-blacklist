@@ -15,10 +15,11 @@ if [[ ! -f "/etc/ipset.conf" ]]; then
 	exit 2
 fi
 
-# Backup current iptables rules
 if [ ! -d "iptables-backup" ]; then
   mkdir "iptables-backup"
 fi
+
+# Backup current iptables rules
 if [ -f "iptables-backup/rules.v4" ]; then
 	mv "iptables-backup/rules.v4" "iptables-backup/rules_old.v4"
 fi
@@ -35,6 +36,7 @@ echo "iptables and ip6tables rules were successfully backed up"
 # Backup old ru-blacklist.txt file
 if [ -f "ru-blacklist.txt" ]; then
     mv "ru-blacklist.txt" "ru-blacklist-old.txt"
+    chmod 600 ru-blacklist-old.txt
 else
     echo "ru-blacklist.txt not found"
 fi
@@ -47,9 +49,6 @@ curl -o "ru-blacklist.txt" "$URL" &>/dev/null
 if [ $? -eq 0 ]; then
     echo "Blacklist was successfully downloaded"
     chmod 600 ru-blacklist.txt
-    if [ -f "ru-blacklist-old.txt" ]; then
-        chmod 600 ru-blacklist-old.txt
-    fi
 else
     echo "Blacklist download failed"
     exit 2
