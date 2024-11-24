@@ -1,5 +1,4 @@
 #!/bin/bash
-set -euo pipefail
 
 if [ $(id -u) -ne 0 ]
   then echo "Please run this script as root or using sudo"
@@ -43,8 +42,8 @@ fi
 iptables-save > /etc/iptables/rules.v4
 
 # Remove ip6tables rule
-if iptables -t raw -C PREROUTING -m set --match-set ru-blacklist-v6 src -j DROP 2>/dev/null; then
-	iptables -t raw -D PREROUTING -m set --match-set ru-blacklist-v6 src -j DROP
+if ip6tables -t raw -C PREROUTING -m set --match-set ru-blacklist-v6 src -j DROP 2>/dev/null; then
+	ip6tables -t raw -D PREROUTING -m set --match-set ru-blacklist-v6 src -j DROP
 	echo "ip6tables rule for PREROUTING chain was successfully removed"
 else
 	echo "ip6tables rule for PREROUTING chain wasn't found"
@@ -54,7 +53,7 @@ ip6tables-save > /etc/iptables/rules.v6
 # Delete ipset list for ipv4
 if ipset list -n | grep -q "ru-blacklist-v4"; then
 	ipset destroy ru-blacklist-v4
-	echo "ipset list ru-blacklist-v4 was successfully deleted"
+	echo "ipset list ru-blacklist-v4 was successfully removed"
 else
 	echo "ipset list ru-blacklist-v4 wasn't found"
 fi
@@ -62,7 +61,7 @@ fi
 # Delete ipset list for ipv6
 if ipset list -n | grep -q "ru-blacklist-v6"; then
 	ipset destroy ru-blacklist-v6
-	echo "ipset list ru-blacklist-v6 was successfully deleted"
+	echo "ipset list ru-blacklist-v6 was successfully removed"
 else
 	echo "ipset list ru-blacklist-v6 wasn't found"
 fi
