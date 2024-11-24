@@ -16,6 +16,16 @@ if [[ ! -d "/etc/ipset.conf" ]]; then
 	exit 2
 fi
 
+# Download the blacklist
+URL="https://raw.githubusercontent.com/C24Be/AS_Network_List/refs/heads/main/blacklists/blacklist.txt"
+curl -o "ru-blacklist.txt" "$URL" &>/dev/null
+if [ $? -eq 0 ]; then
+    echo "The blacklist was successfully updated"
+else
+    echo "Update failed"
+    exit 2
+fi
+
 # Backup current iptables rules
 if [ ! -d "iptables-backup" ]; then
   mkdir "iptables-backup"
