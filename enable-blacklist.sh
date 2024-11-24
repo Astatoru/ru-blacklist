@@ -25,14 +25,17 @@ if [ -f "iptables-backup/iptables.rules" ]; then
 fi
 iptables-save > "iptables-backup/iptables.rules"
 
+# Delete old iptables rule
 if iptables -n -t raw -C PREROUTING -m set --match-set ru-blacklist src -j DROP 2>/dev/null; then
 	iptables -n -t raw -D PREROUTING -m set --match-set ru-blacklist src -j DROP
 fi
 
+# Delete old ipset list
 if ipset list -n | grep -q "ru-blacklist"; then
 	ipset destroy ru-blacklist
 fi
 
+# Create new ipset list
 ipset create ru-blacklist hash:net &>/dev/null
 while read -r ip; do
     if ! ipset test ru-blacklist "$ip" 2>/dev/null; then
@@ -42,6 +45,7 @@ while read -r ip; do
 done < ru-blacklist.txt
 ipset save > /etc/ipset.conf
 
+# Create new iptables rule
 if ! iptables -n -t raw -C PREROUTING -m set --match-set ru-blacklist src -j DROP 2>/dev/null; then
 	iptables -n -t raw -I PREROUTING -m set --match-set ru-blacklist src -j DROP
 	echo "The rule for PREROUTING chain was successfully created"
