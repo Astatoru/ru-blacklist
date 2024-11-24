@@ -20,7 +20,7 @@ fi
 URL="https://raw.githubusercontent.com/C24Be/AS_Network_List/refs/heads/main/blacklists/blacklist.txt"
 curl -o "ru-blacklist.txt" "$URL" &>/dev/null
 if [ $? -eq 0 ]; then
-    echo "The blacklist was successfully updated"
+    echo "Blacklist was successfully updated"
 else
     echo "Blacklist update failed"
     exit 2
