@@ -11,28 +11,10 @@ if [[ ! -d "/etc/iptables" ]]; then
 	exit 2
 fi
 
-if [[ ! -d "/etc/ipset.conf" ]]; then
+if [[ ! -f "/etc/ipset.conf" ]]; then
 	echo "The script is intended to be used with ipset. Are you sure all the necessary packages are installed?"
 	exit 2
 fi
-
-# Backup old ru-blacklist.txt file
-if [ -f "ru-blacklist.txt" ]; then
-    mv "ru-blacklist.txt" "ru-blacklist-old.txt"
-else
-    echo "ru-blacklist.txt not found"
-fi
-
-# Download the blacklist
-URL="https://raw.githubusercontent.com/C24Be/AS_Network_List/refs/heads/main/blacklists/blacklist.txt"
-curl -o "ru-blacklist.txt" "$URL" &>/dev/null
-if [ $? -eq 0 ]; then
-    echo "Blacklist was successfully updated"
-else
-    echo "Blacklist update failed"
-    exit 2
-fi
-
 # Backup current iptables rules
 if [ ! -d "iptables-backup" ]; then
   mkdir "iptables-backup"
@@ -49,6 +31,23 @@ fi
 ip6tables-save > "iptables-backup/rules.v6"
 
 echo "iptables and ip6tables rules were successfully backed up"
+
+# Backup old ru-blacklist.txt file
+if [ -f "ru-blacklist.txt" ]; then
+    mv "ru-blacklist.txt" "ru-blacklist-old.txt"
+else
+    echo "ru-blacklist.txt not found"
+fi
+
+# Download the blacklist
+URL="https://raw.githubusercontent.com/C24Be/AS_Network_List/refs/heads/main/blacklists/blacklist.txt"
+curl -o "ru-blacklist.txt" "$URL" &>/dev/null
+if [ $? -eq 0 ]; then
+    echo "Blacklist was successfully downloaded"
+else
+    echo "Blacklist download failed"
+    exit 2
+fi
 
 # Create a new ipset lists for ipv4 and ipv6
 ipset create ru-blacklist-v4 hash:net &>/dev/null
