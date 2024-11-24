@@ -119,14 +119,14 @@ echo "Blacklist was successfully enabled"
 # Display current iptables and ip6tables rules
 while true; do
 read -p "Show current iptables and ip6tables rules in PREROUTING chain? (y/n): " answer
-if [[ "$answer" == "y" ]]; then
+if [[ -z "$answer" || "$answer" == "y" ]]; then
 	echo ""
 	echo "iptables PREROUTING rules:"
 	iptables -t raw -L PREROUTING -n -v
 	echo ""
 	echo "ip6tables PREROUTING rules:"
-	echo ""
 	ip6tables -t raw -L PREROUTING -n -v
+	echo ""
 	exit 0
 elif [[ "$answer" == "n" ]]; then
 	exit 0
