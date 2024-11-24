@@ -126,7 +126,7 @@ if [[ "$answer" == "y" ]]; then
 	echo ""
 	echo "ip6tables PREROUTING rules:"
 	echo ""
-    ip6tables -t raw -L PREROUTING -n -v
+	ip6tables -t raw -L PREROUTING -n -v
 	exit 0
 elif [[ "$answer" == "n" ]]; then
 	exit 0
