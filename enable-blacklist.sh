@@ -22,7 +22,7 @@ curl -o "ru-blacklist.txt" "$URL" &>/dev/null
 if [ $? -eq 0 ]; then
     echo "The blacklist was successfully updated"
 else
-    echo "Update failed"
+    echo "Blacklist update failed"
     exit 2
 fi
 
