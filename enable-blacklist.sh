@@ -5,28 +5,28 @@ green='\033[0;32m'
 red='\033[0;31m'
 nc='\033[0m'
 
-if [ $(id -u) -ne 0 ]
-  then echo -e "${red}Please run this script as root or using sudo${nc}\a"
-  exit 1
+if [ $(id -u) -ne 0 ]; then
+    echo -e "${red}Please run this script as root or using sudo${nc}\a"
+    exit 1
 fi
 
 if [[ ! -d "/etc/iptables" ]]; then
 	echo -e "${red}The script is intended to be used with iptables. Are you sure all the necessary packages are installed?${nc}\a"
-	exit 2
+	exit 1
 fi
 
 if [[ ! -f "/etc/ipset.conf" ]]; then
 	echo -e "${red}The script is intended to be used with ipset. Are you sure all the necessary packages are installed?${nc}\a"
-	exit 2
+	exit 1
 fi
 
 if [ ! -d "backup" ]; then
-  mkdir "backup"
+    mkdir "backup"
 fi
 
 # Backup current iptables rules
 if [ -f "backup/rules.v4" ]; then
-	mv "backup/rules.v4" "backup/rules_old.v4"
+    mv "backup/rules.v4" "backup/rules_old.v4"
 fi
 iptables-save > "backup/rules.v4"
 echo "iptables rules were successfully backed up: backup/rules.v4"
@@ -43,8 +43,8 @@ if [ -f "backup/ipset.conf" ]; then
 	mv "backup/ipset.conf" "backup/ipset_old.conf"
 fi
 ipset save > "backup/ipset.conf"
-
 echo "ipset settings were successfully backed up: backup/ipset.conf"
+
 # Backup old ru-blacklist.txt file
 if [ -f "ru-blacklist.txt" ]; then
     mv "ru-blacklist.txt" "ru-blacklist-old.txt"
@@ -121,6 +121,8 @@ done
 else
 	echo "ru-blacklist-old.txt wasn't found"
 fi
+
+# Save ipset settings and make them peristent
 ipset save > "/etc/ipset.conf"
 echo "New ipset settings were successfully saved and made persistent: /etc/ipset.conf"
 
@@ -179,6 +181,6 @@ while true; do
     elif [[ "$answer" == "n" ]]; then
         exit 0
     else
-            echo -e "${red}Invalid input. Please enter 'y' or 'n'${nc}\a"
+        echo -e "${red}Invalid input. Please enter 'y' or 'n'${nc}\a"
     fi
 done
