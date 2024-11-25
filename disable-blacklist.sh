@@ -122,6 +122,6 @@ while true; do
     elif [[ "$answer" == "n" ]]; then
         exit 0
     else
-		echo -e "${red}Invalid input. Please enter 'y' or 'n'${nc}\a"
+            echo -e "${red}Invalid input. Please enter 'y' or 'n'${nc}\a"
     fi
 done
