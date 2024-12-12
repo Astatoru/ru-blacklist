@@ -5,4 +5,4 @@ The easy way to block active probing of your server by Russian glowies
 
 ### To-do
 - ~~Make a script which'll disable blacklist~~
-- Script for creating a cron job and cron job script itself
+- Cron job
